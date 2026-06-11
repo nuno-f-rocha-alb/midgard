@@ -1,5 +1,6 @@
 import React from 'react'
 import { fmtBytes, fmtUptime } from '../api.js'
+import Icon from './Icons.jsx'
 
 function Widget({ title, ok, error, children }) {
   return (
@@ -39,8 +40,8 @@ function Qbit({ q }) {
   return (
     <Widget title="qBittorrent" ok={q.ok} error={q.error}>
       <div className="stat-row">
-        <Stat label="download" value={`↓ ${fmtBytes(d.dl_speed)}`} tone="ok-text" />
-        <Stat label="upload" value={`↑ ${fmtBytes(d.up_speed)}`} />
+        <Stat label="download" value={<><Icon name="down" size={14} /> {fmtBytes(d.dl_speed)}</>} tone="ok-text" />
+        <Stat label="upload" value={<><Icon name="up" size={14} /> {fmtBytes(d.up_speed)}</>} />
         <Stat label="a sacar" value={d.downloading} />
         <Stat label="em seed" value={d.seeding} />
       </div>
@@ -68,7 +69,11 @@ function Nas({ s }) {
   const failed = d.failed || []
   return (
     <Widget title="neverNAS · discos" ok={s.ok} error={s.error}>
-      {failed.length > 0 && <div className="alert">⚠ SMART falhou: {failed.join(', ')}</div>}
+      {failed.length > 0 && (
+        <div className="alert">
+          <Icon name="alert" size={14} label="aviso" /> SMART falhou: {failed.join(', ')}
+        </div>
+      )}
       <div className="disk-grid">
         {disks.map((disk) => (
           <div key={disk.wwn} className="disk" title={disk.model}>
@@ -136,10 +141,13 @@ function Emby({ e }) {
       {playing.length === 0 ? (
         <div className="muted">ninguém a ver nada</div>
       ) : (
-        playing.map((s, i) => (
-          <div key={i} className="emby-session">
-            {s.paused ? '⏸' : '▶'} <strong>{s.title}</strong>
-            <span className="muted"> — {s.user} · {s.client}</span>
+        playing.map((s) => (
+          <div key={`${s.user}-${s.title}`} className="emby-session">
+            <Icon name={s.paused ? 'pause' : 'play'} size={14} label={s.paused ? 'em pausa' : 'a reproduzir'} />
+            <span>
+              <strong>{s.title}</strong>
+              <span className="muted"> — {s.user} · {s.client}</span>
+            </span>
           </div>
         ))
       )}

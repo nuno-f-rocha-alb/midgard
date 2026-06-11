@@ -1,4 +1,5 @@
 import React from 'react'
+import Icon from './Icons.jsx'
 
 const BANGS = {
   yt: 'https://www.youtube.com/results?search_query=',
@@ -33,11 +34,12 @@ export default function SearchBar() {
   }
 
   return (
-    <form className="search" onSubmit={submit}>
-      <span className="search-icon">⌕</span>
+    <form className="search" onSubmit={submit} role="search">
+      <Icon name="search" size={18} className="search-icon" />
       <input
         ref={inputRef}
         type="text"
+        aria-label="Pesquisar na web"
         placeholder="Pesquisar… (!yt !gh !w !amz !cm)"
         autoComplete="off"
       />

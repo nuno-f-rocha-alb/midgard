@@ -26,8 +26,21 @@ function Clock() {
   )
 }
 
+function Skeleton() {
+  return (
+    <section className="section" aria-label="a carregar">
+      <div className="skeleton-grid">
+        {Array.from({ length: 6 }, (_, i) => (
+          <div key={i} className="card skeleton" />
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export default function App() {
   const state = useDashboard()
+  const loading = Object.keys(state).length === 0
   return (
     <div className="page">
       <header className="hero">
@@ -36,9 +49,15 @@ export default function App() {
         <TopSites />
       </header>
       <main>
-        <Machines beszel={state.beszel} />
-        <Widgets state={state} />
-        <Services services={state.services} portainer={state.portainer} />
+        {loading ? (
+          <Skeleton />
+        ) : (
+          <>
+            <Machines beszel={state.beszel} />
+            <Widgets state={state} />
+            <Services services={state.services} portainer={state.portainer} />
+          </>
+        )}
       </main>
     </div>
   )
