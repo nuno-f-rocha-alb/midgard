@@ -62,6 +62,8 @@ export function useAccent() {
 
     const onMessage = (e) => {
       if (e.data?.type !== 'midgard:accent' || !e.data.color) return
+      // o seletor in-app manda; a extensão só semeia se ainda não há escolha local
+      if (localStorage.getItem('midgard:accent')) return
       applyAccent(e.data.color)
       localStorage.setItem('midgard:accent', e.data.color)
     }

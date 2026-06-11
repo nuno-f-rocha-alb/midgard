@@ -5,6 +5,7 @@ import TopSites from './components/TopSites.jsx'
 import Machines from './components/Machines.jsx'
 import Widgets from './components/Widgets.jsx'
 import Services from './components/Services.jsx'
+import Settings from './components/Settings.jsx'
 
 function Clock() {
   const [now, setNow] = React.useState(new Date())
@@ -44,6 +45,7 @@ export default function App() {
   const loading = Object.keys(state).length === 0
   return (
     <div className="page">
+      <Settings />
       <header className="hero">
         <Clock />
         <SearchBar />

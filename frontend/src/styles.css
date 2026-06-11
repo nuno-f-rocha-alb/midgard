@@ -44,6 +44,67 @@ body {
 
 .icon { vertical-align: -0.15em; flex-shrink: 0; }
 
+/* ── settings (engrenagem + painel do accent) ───── */
+.settings { position: fixed; top: 16px; right: 16px; z-index: var(--z-overlay); }
+.settings-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  color: var(--muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  transition: color 0.2s ease-out, border-color 0.2s ease-out;
+}
+.settings-btn:hover { color: var(--accent); border-color: var(--accent); }
+.settings-panel {
+  position: absolute;
+  top: 46px;
+  right: 0;
+  min-width: 210px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 14px;
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+.settings-row input[type="color"] {
+  width: 44px;
+  height: 30px;
+  padding: 2px;
+  background: none;
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.settings-reset {
+  margin-top: 10px;
+  width: 100%;
+  padding: 7px;
+  font-size: 12px;
+  background: none;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s ease-out, border-color 0.2s ease-out;
+}
+.settings-reset:hover { color: var(--accent); border-color: var(--accent); }
+
 .page {
   max-width: 1280px;
   margin: 0 auto;
