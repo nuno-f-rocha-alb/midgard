@@ -32,6 +32,7 @@ class HealthCheck(Connector):
             "name": svc.get("name"),
             "url": svc.get("url"),
             "icon": svc.get("icon"),
+            "container": svc.get("container"),
             "status": "unknown",
             "latency_ms": None,
         }

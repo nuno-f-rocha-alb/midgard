@@ -1,8 +1,10 @@
 # Tiles do dashboard, agrupados. Cada serviço:
-#   name  — o que aparece no tile
-#   url   — para onde o clique leva
-#   check — (opcional) URL para o health check; default = url
-#   icon  — (opcional) slug de https://selfh.st/icons/ ; default = inicial do nome
+#   name      — o que aparece no tile
+#   url       — para onde o clique leva
+#   check     — (opcional) URL para o health check; default = url
+#   icon      — (opcional) slug de https://selfh.st/icons/ ; default = inicial do nome
+#   container — (opcional) nome do container no dockeralho; se definido, o tile
+#               mostra CPU/RAM desse container (via API do Portainer)
 #
 # Hostnames = registos Local DNS do Pi-hole (sempre FQDN .lan — dentro do
 # container não há search domain, nomes soltos não resolvem).
@@ -11,41 +13,41 @@ groups:
   - name: Media
     services:
       - { name: Emby, url: "http://bifesflix.lan:8096", icon: emby }
-      - { name: Seerr, url: "http://dockeralho.lan:5055", icon: jellyseerr }
-      - { name: Sonarr, url: "http://dockeralho.lan:8989", icon: sonarr }
-      - { name: Sonarr Anime, url: "http://dockeralho.lan:8990", icon: sonarr }
-      - { name: Radarr, url: "http://dockeralho.lan:7878", icon: radarr }
-      - { name: Radarr Anime, url: "http://dockeralho.lan:7879", icon: radarr }
-      - { name: Bazarr, url: "http://dockeralho.lan:6767", icon: bazarr }
-      - { name: Prowlarr, url: "http://dockeralho.lan:9696", icon: prowlarr }
-      - { name: Autobrr, url: "http://dockeralho.lan:7474", icon: autobrr }
-      - { name: qui, url: "http://dockeralho.lan:7476", icon: qbittorrent }
-      - { name: qBittorrent, url: "http://dockeralho.lan:8080", icon: qbittorrent }
-      - { name: Dispatcharr, url: "http://dockeralho.lan:9191" }
+      - { name: Seerr, url: "http://dockeralho.lan:5055", icon: jellyseerr, container: seerr }
+      - { name: Sonarr, url: "http://dockeralho.lan:8989", icon: sonarr, container: sonarr }
+      - { name: Sonarr Anime, url: "http://dockeralho.lan:8990", icon: sonarr, container: sonarr_anime }
+      - { name: Radarr, url: "http://dockeralho.lan:7878", icon: radarr, container: radarr }
+      - { name: Radarr Anime, url: "http://dockeralho.lan:7879", icon: radarr, container: radarr_anime }
+      - { name: Bazarr, url: "http://dockeralho.lan:6767", icon: bazarr, container: bazarr }
+      - { name: Prowlarr, url: "http://dockeralho.lan:9696", icon: prowlarr, container: prowlarr }
+      - { name: Autobrr, url: "http://dockeralho.lan:7474", icon: autobrr, container: autobrr }
+      - { name: qui, url: "http://dockeralho.lan:7476", icon: qbittorrent, container: qui }
+      - { name: qBittorrent, url: "http://dockeralho.lan:8080", icon: qbittorrent, container: qbittorrent }
+      - { name: Dispatcharr, url: "http://dockeralho.lan:9191", container: dispatcharr }
 
   - name: Apps
     services:
-      - { name: Immich, url: "http://dockeralho.lan:2283", icon: immich }
-      - { name: Komga, url: "http://dockeralho.lan:25600", icon: komga }
-      - { name: Hoarder, url: "http://dockeralho.lan:3000", icon: hoarder }
-      - { name: Vaultwarden, url: "http://dockeralho.lan:8908", icon: vaultwarden }
-      - { name: Pingvin Share, url: "http://dockeralho.lan:3005", icon: pingvin-share }
-      - { name: Spoolwise, url: "http://dockeralho.lan:5000" }
-      - { name: Comics Scraper, url: "http://dockeralho.lan:8282" }
+      - { name: Immich, url: "http://dockeralho.lan:2283", icon: immich, container: immich_server }
+      - { name: Komga, url: "http://dockeralho.lan:25600", icon: komga, container: komga }
+      - { name: Hoarder, url: "http://dockeralho.lan:3000", icon: hoarder, container: hoarder-web-1 }
+      - { name: Vaultwarden, url: "http://dockeralho.lan:8908", icon: vaultwarden, container: vaultwarden }
+      - { name: Pingvin Share, url: "http://dockeralho.lan:3005", icon: pingvin-share, container: pingvin-share-pingvin-share-1 }
+      - { name: Spoolwise, url: "http://dockeralho.lan:5000", container: printing-app-app-1 }
+      - { name: Comics Scraper, url: "http://dockeralho.lan:8282", container: comics-scraper-py }
 
   - name: Infra
     services:
-      - { name: Zoraxy, url: "http://dockeralho.lan:8002", icon: zoraxy }
-      - { name: Portainer, url: "https://dockeralho.lan:9443", icon: portainer }
-      - { name: Beszel, url: "http://dockeralho.lan:8090", icon: beszel }
-      - { name: Uptime Kuma, url: "http://dockeralho.lan:3001", icon: uptime-kuma }
+      - { name: Zoraxy, url: "http://dockeralho.lan:8002", icon: zoraxy, container: zoraxy }
+      - { name: Portainer, url: "https://dockeralho.lan:9443", icon: portainer, container: portainer }
+      - { name: Beszel, url: "http://dockeralho.lan:8090", icon: beszel, container: beszel }
+      - { name: Uptime Kuma, url: "http://dockeralho.lan:3001", icon: uptime-kuma, container: uptime-kuma }
       - { name: Pi-hole, url: "http://pihole.lan:8080/admin", icon: pi-hole }
-      - { name: Bifrost, url: "http://dockeralho.lan:3123" }
+      - { name: Bifrost, url: "http://dockeralho.lan:3123", container: bifrost-frontend }
       - { name: Crafty, url: "https://crafty.lan:8443", icon: crafty-controller }
       - { name: PVE1, url: "https://pve1.lan:8006", icon: proxmox }
       - { name: PVE2, url: "https://pve2.lan:8006", icon: proxmox }
       - { name: Scrutiny, url: "http://nevernas.lan:8080", icon: scrutiny }
-      - { name: Diskover, url: "http://dockeralho.lan:8056", icon: diskover }
-      - { name: Speedtest, url: "http://dockeralho.lan:8880", icon: speedtest-tracker }
+      - { name: Diskover, url: "http://dockeralho.lan:8056", icon: diskover, container: diskover }
+      - { name: Speedtest, url: "http://dockeralho.lan:8880", icon: speedtest-tracker, container: speedtest-tracker }
       - { name: GL.iNet, url: "http://glinet.lan", icon: openwrt }
       - { name: Asus (OpenWrt), url: "http://asus-openwrt.lan", icon: openwrt }

@@ -14,12 +14,12 @@ function TileIcon({ svc }) {
   )
 }
 
-function Tile({ svc }) {
+function Tile({ svc, stats }) {
   const statusLabel =
     svc.status === 'up' ? 'online' : svc.status === 'down' ? 'offline' : 'estado desconhecido'
   return (
     <a
-      className="tile"
+      className={`tile ${stats ? 'tile-stats' : ''}`}
       href={svc.url}
       target="_top"
       title={`${svc.name} · ${statusLabel}${svc.latency_ms != null ? ` · ${svc.latency_ms}ms` : ''}`}
@@ -30,7 +30,15 @@ function Tile({ svc }) {
         aria-label={statusLabel}
       />
       <TileIcon svc={svc} />
-      <span className="tile-name">{svc.name}</span>
+      <div className="tile-body">
+        <span className="tile-name">{svc.name}</span>
+        {stats && (
+          <div className="tile-metrics">
+            <span>cpu <b>{stats.cpu != null ? `${stats.cpu}%` : '—'}</b></span>
+            <span>ram <b>{stats.mem != null ? `${stats.mem}%` : '—'}</b></span>
+          </div>
+        )}
+      </div>
     </a>
   )
 }
@@ -41,6 +49,7 @@ export default function Services({ services, portainer }) {
   const unhealthy = portainer?.ok
     ? (portainer.data?.endpoints || []).flatMap((e) => e.unhealthy || [])
     : []
+  const stats = portainer?.ok ? portainer.data?.stats || {} : {}
 
   return (
     <section className="section">
@@ -54,7 +63,7 @@ export default function Services({ services, portainer }) {
           <h2>{g.name}</h2>
           <div className="tile-grid">
             {g.services.map((s) => (
-              <Tile key={s.name} svc={s} />
+              <Tile key={s.name} svc={s} stats={s.container ? stats[s.container] : null} />
             ))}
           </div>
         </div>
