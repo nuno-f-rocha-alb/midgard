@@ -53,9 +53,9 @@ export default function App() {
           <Skeleton />
         ) : (
           <>
+            <Services services={state.services} portainer={state.portainer} />
             <Machines beszel={state.beszel} />
             <Widgets state={state} />
-            <Services services={state.services} portainer={state.portainer} />
           </>
         )}
       </main>
