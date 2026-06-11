@@ -1,0 +1,15 @@
+services:
+  midgard:
+    build: .
+    container_name: midgard
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8484:8484"
+    volumes:
+      - ./config:/config:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8484/api/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

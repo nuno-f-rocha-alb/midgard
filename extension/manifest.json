@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Midgard New Tab",
+  "description": "Abre o dashboard Midgard em cada novo separador e fornece os sites mais visitados.",
+  "version": "0.1.0",
+  "permissions": ["topSites", "storage"],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "midgard-newtab@nunobifes",
+      "strict_min_version": "115.0"
+    }
+  }
+}

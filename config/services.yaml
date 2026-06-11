@@ -1,0 +1,48 @@
+# Tiles do dashboard, agrupados. Cada serviço:
+#   name  — o que aparece no tile
+#   url   — para onde o clique leva
+#   check — (opcional) URL para o health check; default = url
+#   icon  — (opcional) slug de https://selfh.st/icons/ ; default = inicial do nome
+#
+# Ajusta hosts/portas à tua rede (zoraxy domains ou IP:porta, como preferires).
+
+groups:
+  - name: Media
+    services:
+      - { name: Emby, url: "http://emby:8096", icon: emby }
+      - { name: Seerr, url: "http://dockeralho:5055", icon: jellyseerr }
+      - { name: Sonarr, url: "http://dockeralho:8989", icon: sonarr }
+      - { name: Sonarr Anime, url: "http://dockeralho:8990", icon: sonarr }
+      - { name: Radarr, url: "http://dockeralho:7878", icon: radarr }
+      - { name: Radarr Anime, url: "http://dockeralho:7879", icon: radarr }
+      - { name: Bazarr, url: "http://dockeralho:6767", icon: bazarr }
+      - { name: Prowlarr, url: "http://dockeralho:9696", icon: prowlarr }
+      - { name: Autobrr, url: "http://dockeralho:7474", icon: autobrr }
+      - { name: qui, url: "http://dockeralho:7476", icon: qbittorrent }
+      - { name: qBittorrent, url: "http://dockeralho:8080", icon: qbittorrent }
+      - { name: Dispatcharr, url: "http://dockeralho:9191" }
+
+  - name: Apps
+    services:
+      - { name: Immich, url: "http://dockeralho:2283", icon: immich }
+      - { name: Komga, url: "http://dockeralho:25600", icon: komga }
+      - { name: Hoarder, url: "http://dockeralho:3000", icon: hoarder }
+      - { name: Vaultwarden, url: "http://dockeralho:8908", icon: vaultwarden }
+      - { name: Pingvin Share, url: "http://dockeralho:3005", icon: pingvin-share }
+      - { name: Spoolwise, url: "http://dockeralho:5000" }
+      - { name: Comics Scraper, url: "http://dockeralho:8282" }
+
+  - name: Infra
+    services:
+      - { name: Zoraxy, url: "http://dockeralho:8002", icon: zoraxy }
+      - { name: Portainer, url: "https://dockeralho:9443", icon: portainer }
+      - { name: Beszel, url: "http://dockeralho:8090", icon: beszel }
+      - { name: Uptime Kuma, url: "http://dockeralho:3001", icon: uptime-kuma }
+      - { name: Pi-hole, url: "http://pihole/admin", icon: pi-hole }
+      - { name: Bifrost, url: "http://dockeralho:3123" }
+      - { name: Crafty, url: "https://crafty:8443", icon: crafty-controller }
+      - { name: PVE1, url: "https://pve1:8006", icon: proxmox }
+      - { name: PVE2, url: "https://pve2:8006", icon: proxmox }
+      - { name: Scrutiny, url: "http://nevernas:8080", icon: scrutiny }
+      - { name: Diskover, url: "http://dockeralho:8056", icon: diskover }
+      - { name: Speedtest, url: "http://dockeralho:8880", icon: speedtest-tracker }
