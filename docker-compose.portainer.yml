@@ -1,0 +1,37 @@
+# Stack para o Portainer (web editor): cola isto em Stacks → Add stack,
+# substitui OWNER pelo teu user/org do GitHub e define os env vars na
+# secção "Environment variables" da UI — os ${VAR} são interpolados daí,
+# os tokens nunca ficam no texto da stack.
+#
+# O config/services.yaml vai dentro da imagem; para mudar tiles é commit +
+# push (o CI builda e o watchtower atualiza). Sem env var definido, o
+# conector correspondente fica simplesmente desativado.
+
+services:
+  midgard:
+    image: ghcr.io/OWNER/midgard:latest
+    container_name: midgard
+    restart: unless-stopped
+    ports:
+      - "8484:8484"
+    environment:
+      - BESZEL_URL=${BESZEL_URL}
+      - BESZEL_EMAIL=${BESZEL_EMAIL}
+      - BESZEL_PASSWORD=${BESZEL_PASSWORD}
+      - PORTAINER_URL=${PORTAINER_URL}
+      - PORTAINER_API_KEY=${PORTAINER_API_KEY}
+      - PIHOLE_URL=${PIHOLE_URL}
+      - PIHOLE_PASSWORD=${PIHOLE_PASSWORD}
+      - PROXMOX_NODES=${PROXMOX_NODES}
+      - EMBY_URL=${EMBY_URL}
+      - EMBY_API_KEY=${EMBY_API_KEY}
+      - CRAFTY_URL=${CRAFTY_URL}
+      - CRAFTY_TOKEN=${CRAFTY_TOKEN}
+      - QBIT_URL=${QBIT_URL}
+      - QBIT_USERNAME=${QBIT_USERNAME}
+      - QBIT_PASSWORD=${QBIT_PASSWORD}
+      - SCRUTINY_URL=${SCRUTINY_URL}
+      - SPEEDTEST_URL=${SPEEDTEST_URL}
+      - SPEEDTEST_TOKEN=${SPEEDTEST_TOKEN}
+      - BIFROST_AGENT_URL=${BIFROST_AGENT_URL}
+      - BIFROST_AGENT_KEY=${BIFROST_AGENT_KEY}

@@ -14,7 +14,23 @@ O backend agrega APIs que já existem na rede; as credenciais ficam todas no
 `.env` do container, nunca chegam ao browser. Conectores sem config ficam
 desativados automaticamente.
 
-## Deploy (dockeralho)
+## Deploy via Portainer (recomendado)
+
+Padrão GitOps, igual ao bifrost: push para `main` → GitHub Actions builda
+`ghcr.io/<owner>/midgard:latest` → Portainer corre a imagem → watchtower
+atualiza nos pushes seguintes.
+
+1. Push do repo para o GitHub (o workflow em
+   [`.github/workflows/build-push.yml`](.github/workflows/build-push.yml) trata do build).
+2. Tornar o package `midgard` público (Settings do package → Change visibility),
+   ou fazer `docker login ghcr.io` no dockeralho se o quiseres privado.
+3. Portainer → Stacks → Add stack → Web editor → colar
+   [`docker-compose.portainer.yml`](docker-compose.portainer.yml) (substituir `OWNER`).
+4. Preencher os tokens na secção **Environment variables** da stack e Deploy.
+
+O `config/services.yaml` vai dentro da imagem — mudar tiles = commit + push.
+
+## Deploy manual (alternativa, sem GitHub)
 
 ```bash
 git clone <repo> && cd dashboard
