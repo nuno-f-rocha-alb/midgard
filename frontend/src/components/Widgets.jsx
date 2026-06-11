@@ -67,6 +67,14 @@ function Nas({ s }) {
   const d = s.data || {}
   const disks = d.disks || []
   const failed = d.failed || []
+  // alguns discos do scrutiny vêm com device_name genérico ("bus/0");
+  // desambiguar com o fim do wwn
+  const nameCounts = {}
+  for (const disk of disks) nameCounts[disk.name] = (nameCounts[disk.name] || 0) + 1
+  const label = (disk) =>
+    !disk.name || nameCounts[disk.name] > 1
+      ? `${disk.name || 'disco'}·${String(disk.wwn).slice(-4)}`
+      : disk.name
   return (
     <Widget title="neverNAS · discos" ok={s.ok} error={s.error}>
       {failed.length > 0 && (
@@ -78,7 +86,7 @@ function Nas({ s }) {
         {disks.map((disk) => (
           <div key={disk.wwn} className="disk" title={disk.model}>
             <span className={`dot ${disk.status === 0 ? 'up' : 'down'}`} />
-            <span>{disk.name}</span>
+            <span>{label(disk)}</span>
             <span className="muted">{disk.temp != null ? `${disk.temp}°C` : ''}</span>
           </div>
         ))}
@@ -118,6 +126,7 @@ function Proxmox({ p }) {
               </span>
             )}
           </div>
+          {!n.online && <div className="widget-err-msg">{n.error}</div>}
           {n.online && (
             <div className="guest-list">
               {n.guests.map((g) => (
