@@ -36,6 +36,9 @@ class OpenWrt(Connector):
             f"{url}/ubus",
             json={"jsonrpc": "2.0", "id": 1, "method": "call", "params": params},
         )
+        # GL.iNet (firmware 4.x) redireciona /ubus — não expõe a API ubus da LuCI
+        if resp.is_redirect:
+            raise RuntimeError("/ubus indisponível (redirect) — ativa a LuCI no router e usa o IP")
         resp.raise_for_status()
         return resp.json()
 

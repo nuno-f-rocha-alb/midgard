@@ -15,7 +15,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/app ./app
 COPY --from=frontend /build/dist ./static
+# /config = override por volume; /app/config = cópia baked usada como fallback
+# (um volume montado em /config nunca tapa esta)
 COPY config /config
+COPY config /app/config
 
 ENV MIDGARD_STATIC=/app/static \
     MIDGARD_CONFIG=/config

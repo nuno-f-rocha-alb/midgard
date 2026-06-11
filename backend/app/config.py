@@ -35,7 +35,13 @@ def env_bool(name: str, default: bool = False) -> bool:
 
 
 # defaults resolvidos a partir da árvore do repo, para dev funcionar de qualquer cwd;
-# no Docker as env vars apontam para /app/static e /config
+# no Docker as env vars apontam para /app/static e /app/config
 STATIC_DIR = Path(env("MIDGARD_STATIC") or _ROOT / "frontend" / "dist")
 CONFIG_DIR = Path(env("MIDGARD_CONFIG") or _ROOT / "config")
 SERVICES_FILE = CONFIG_DIR / "services.yaml"
+
+# Fallback: se o services.yaml não estiver no CONFIG_DIR (ex.: volume vazio a tapar
+# o /config do container), usa a cópia baked dentro do app — os tiles funcionam sempre.
+_BAKED_SERVICES = Path(__file__).resolve().parent.parent / "config" / "services.yaml"
+if not SERVICES_FILE.exists() and _BAKED_SERVICES.exists():
+    SERVICES_FILE = _BAKED_SERVICES
