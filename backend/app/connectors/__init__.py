@@ -7,6 +7,7 @@ from .bifrost import Bifrost
 from .crafty import Crafty
 from .emby import Emby
 from .healthcheck import HealthCheck
+from .openwrt import OpenWrt
 from .pihole import PiHole
 from .portainer import Portainer
 from .proxmox import Proxmox
@@ -25,6 +26,7 @@ ALL = [
     Scrutiny,
     SpeedtestTracker,
     Bifrost,
+    OpenWrt,
     HealthCheck,
 ]
 

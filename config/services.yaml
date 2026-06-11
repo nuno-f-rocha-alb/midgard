@@ -46,3 +46,5 @@ groups:
       - { name: Scrutiny, url: "http://nevernas:8080", icon: scrutiny }
       - { name: Diskover, url: "http://dockeralho:8056", icon: diskover }
       - { name: Speedtest, url: "http://dockeralho:8880", icon: speedtest-tracker }
+      - { name: GL.iNet, url: "http://192.168.8.1", icon: openwrt }
+      - { name: Asus (OpenWrt), url: "http://192.168.1.1", icon: openwrt }

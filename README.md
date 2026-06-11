@@ -52,6 +52,7 @@ docker compose up -d --build # fica em :8484
 | Crafty | perfil do user → API Keys |
 | qBittorrent | user/pass da web UI |
 | Scrutiny | sem auth, só o URL |
+| OpenWrt (GL.iNet/Asus) | credenciais da LuCI; precisa do endpoint `/ubus` (vem com a LuCI) |
 | Speedtest Tracker | Settings → API Tokens |
 | Bifrost | o `AGENT_KEY` do `.env` do agent no VPS |
 

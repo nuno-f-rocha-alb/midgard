@@ -177,6 +177,33 @@ function Crafty({ c }) {
   )
 }
 
+function Routers({ r }) {
+  const routers = r.data?.routers || []
+  return (
+    <Widget title="Routers" ok={r.ok} error={r.error}>
+      {routers.map((rt) => (
+        <div key={rt.name} className="pve-node">
+          <div className="pve-head">
+            <span className={`dot ${rt.online ? 'up' : 'down'}`} />
+            <strong>{rt.name}</strong>
+            <span className="muted">{rt.model}</span>
+          </div>
+          {rt.online ? (
+            <div className="stat-row">
+              <Stat label="wifi" value={rt.wifi_clients != null ? `${rt.wifi_clients} clientes` : null} />
+              <Stat label="load" value={rt.load} />
+              <Stat label="ram" value={rt.mem != null ? `${rt.mem}%` : null} />
+              <Stat label="uptime" value={fmtUptime(rt.uptime)} />
+            </div>
+          ) : (
+            <div className="muted">{rt.error}</div>
+          )}
+        </div>
+      ))}
+    </Widget>
+  )
+}
+
 export default function Widgets({ state }) {
   const order = [
     ['pihole', Pihole, 'p'],
@@ -187,6 +214,7 @@ export default function Widgets({ state }) {
     ['proxmox', Proxmox, 'p'],
     ['emby', Emby, 'e'],
     ['crafty', Crafty, 'c'],
+    ['openwrt', Routers, 'r'],
   ]
   const active = order.filter(([key]) => state[key])
   if (!active.length) return null
