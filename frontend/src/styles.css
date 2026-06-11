@@ -5,8 +5,10 @@
   --card-border: rgba(255, 255, 255, 0.1);
   --text: #f2ede6;
   --muted: #a39988;
-  --accent: #ff8c42;          /* identidade / interação */
-  --accent-soft: rgba(255, 140, 66, 0.14);
+  /* accent num só sítio: a extensão sobrepõe --accent-rgb e tudo o resto segue */
+  --accent-rgb: 255, 140, 66;
+  --accent: rgb(var(--accent-rgb));   /* identidade / interação */
+  --accent-soft: rgba(var(--accent-rgb), 0.14);
   --ok: #4ade80;              /* verde = positivo/online, nunca decorativo */
   --warn: #fbbf24;
   --crit: #f87171;
@@ -27,8 +29,8 @@ body {
   font-weight: 300;
   line-height: 1.5;
   background:
-    radial-gradient(1100px 520px at 50% -12%, rgba(255, 140, 66, 0.06), transparent),
-    radial-gradient(800px 460px at 88% 112%, rgba(255, 140, 66, 0.05), transparent),
+    radial-gradient(1100px 520px at 50% -12%, rgba(var(--accent-rgb), 0.06), transparent),
+    radial-gradient(800px 460px at 88% 112%, rgba(var(--accent-rgb), 0.05), transparent),
     var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -64,7 +66,7 @@ body {
   font-weight: 400;
   letter-spacing: -1px;
   line-height: 1;
-  text-shadow: 0 0 18px rgba(255, 140, 66, 0.25); /* glow mínimo, só aqui */
+  text-shadow: 0 0 18px rgba(var(--accent-rgb), 0.25); /* glow mínimo, só aqui */
 }
 .clock-date { color: var(--muted); margin-top: 8px; text-transform: capitalize; font-size: 14.5px; }
 
