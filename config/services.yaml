@@ -39,7 +39,7 @@ groups:
       - { name: Portainer, url: "https://dockeralho.lan:9443", icon: portainer }
       - { name: Beszel, url: "http://dockeralho.lan:8090", icon: beszel }
       - { name: Uptime Kuma, url: "http://dockeralho.lan:3001", icon: uptime-kuma }
-      - { name: Pi-hole, url: "http://pihole.lan/admin", icon: pi-hole }
+      - { name: Pi-hole, url: "http://pihole.lan:8080/admin", icon: pi-hole }
       - { name: Bifrost, url: "http://dockeralho.lan:3123" }
       - { name: Crafty, url: "https://crafty.lan:8443", icon: crafty-controller }
       - { name: PVE1, url: "https://pve1.lan:8006", icon: proxmox }
