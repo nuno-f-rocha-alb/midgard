@@ -70,17 +70,18 @@ class PiHole(Connector):
         # ativa começar a falhar (ex.: up/downgrade do Pi-hole), esquece a deteção
         # e volta a sondar no ciclo seguinte — sem precisar de reiniciar o container.
         methods = [(5, self._v5)] if self._version == 5 else [(6, self._v6), (5, self._v5)]
-        last_exc: Exception | None = None
+        errors: list[str] = []
         for version, method in methods:
             try:
                 data = await method(client)
                 self._version = version
                 return data
             except httpx.HTTPStatusError as exc:
-                last_exc = exc
+                errors.append(f"v{version} → HTTP {exc.response.status_code}")
                 if exc.response.status_code != 404:
                     break  # erro real (auth, etc.) — não adianta tentar a outra versão
             except Exception as exc:
-                last_exc = exc
+                errors.append(f"v{version} → {exc}")
         self._version = None
-        raise last_exc
+        # mensagem com o resultado de cada tentativa, para diagnóstico no widget
+        raise RuntimeError(" · ".join(errors) or "sem resposta")
