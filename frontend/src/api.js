@@ -45,6 +45,26 @@ export function useDashboard() {
   return state
 }
 
+// Tema claro/escuro: 'system' segue o SO, 'light'/'dark' fixam. Aplica em <html data-theme>.
+export function applyThemePref() {
+  const mode = localStorage.getItem('midgard:theme') || 'system'
+  const sysLight = window.matchMedia('(prefers-color-scheme: light)').matches
+  const light = mode === 'light' || (mode === 'system' && sysLight)
+  document.documentElement.dataset.theme = light ? 'light' : 'dark'
+  return mode
+}
+
+export function useTheme() {
+  useEffect(() => {
+    applyThemePref()
+    // se está em "system", reage quando o SO troca de tema
+    const mq = window.matchMedia('(prefers-color-scheme: light)')
+    const onChange = () => applyThemePref()
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+}
+
 // Aplica um accent hex (#rrggbb) como --accent-rgb; todo o resto do tema deriva daí.
 export function applyAccent(hex) {
   const m = /^#?([0-9a-f]{6})$/i.exec((hex || '').trim())

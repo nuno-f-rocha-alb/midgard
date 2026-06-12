@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDashboard, useAccent } from './api.js'
+import { useDashboard, useAccent, useTheme } from './api.js'
 import SearchBar from './components/SearchBar.jsx'
 import TopSites from './components/TopSites.jsx'
 import Machines from './components/Machines.jsx'
@@ -42,6 +42,7 @@ function Skeleton() {
 export default function App() {
   const state = useDashboard()
   useAccent()
+  useTheme()
   const loading = Object.keys(state).length === 0
   return (
     <div className="page">
