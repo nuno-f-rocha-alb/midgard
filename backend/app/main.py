@@ -31,6 +31,19 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Midgard", lifespan=lifespan)
 
 
+@app.middleware("http")
+async def cache_headers(request, call_next):
+    """Assets do Vite têm hash no nome → cache eterna; o resto do estático
+    (index.html etc.) revalida sempre, senão o browser segura versões velhas."""
+    response = await call_next(request)
+    path = request.url.path
+    if path.startswith("/assets/"):
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    elif not path.startswith("/api"):
+        response.headers["Cache-Control"] = "no-cache"
+    return response
+
+
 @app.get("/api/health")
 def health() -> dict:
     return {"status": "ok"}
