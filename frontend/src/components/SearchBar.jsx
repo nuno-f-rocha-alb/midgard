@@ -15,22 +15,32 @@ export default function SearchBar() {
   const inputRef = React.useRef(null)
   React.useEffect(() => inputRef.current?.focus(), [])
 
+  // o dashboard corre dentro de um iframe (extensão new tab); navegar o próprio
+  // iframe para o Google falha (X-Frame-Options) — tem de ser a janela de topo
+  const go = (url) => {
+    try {
+      window.top.location.href = url
+    } catch {
+      window.open(url, '_blank')
+    }
+  }
+
   const submit = (e) => {
     e.preventDefault()
     const raw = inputRef.current.value.trim()
     if (!raw) return
     // URL direto
     if (/^https?:\/\//.test(raw) || (/^[\w-]+(\.[\w-]+)+/.test(raw) && !raw.includes(' '))) {
-      location.href = raw.startsWith('http') ? raw : `https://${raw}`
+      go(raw.startsWith('http') ? raw : `https://${raw}`)
       return
     }
     // bangs: "!yt nome do video"
     const bang = raw.match(/^!(\w+)\s+(.*)/)
     if (bang && BANGS[bang[1]]) {
-      location.href = BANGS[bang[1]] + encodeURIComponent(bang[2])
+      go(BANGS[bang[1]] + encodeURIComponent(bang[2]))
       return
     }
-    location.href = DEFAULT_ENGINE + encodeURIComponent(raw)
+    go(DEFAULT_ENGINE + encodeURIComponent(raw))
   }
 
   return (

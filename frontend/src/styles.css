@@ -23,6 +23,23 @@
 
 * { box-sizing: border-box; }
 
+html {
+  /* scrollbars/controlos nativos escuros (sem isto o browser desenha-os claros) */
+  color-scheme: dark;
+  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.26); }
+
 body {
   margin: 0;
   font-family: var(--font-body);
