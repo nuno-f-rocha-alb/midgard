@@ -506,3 +506,15 @@ h2 {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* ── encomendas pendentes (SpoolWise) ───────────── */
+.order-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.order-card { display: block; text-decoration: none; color: inherit; transition: border-color 0.2s ease; }
+.order-card:hover { border-color: var(--accent-ink); }
+.order-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.order-name { font-weight: 500; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.order-meta { font-size: 12px; }

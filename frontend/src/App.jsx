@@ -6,6 +6,7 @@ import Machines from './components/Machines.jsx'
 import Widgets from './components/Widgets.jsx'
 import Services from './components/Services.jsx'
 import Settings from './components/Settings.jsx'
+import PendingOrders from './components/PendingOrders.jsx'
 
 function Clock() {
   const [now, setNow] = React.useState(new Date())
@@ -62,6 +63,7 @@ export default function App() {
             <Widgets state={state} />
           </>
         )}
+        <PendingOrders />
       </main>
     </div>
   )
