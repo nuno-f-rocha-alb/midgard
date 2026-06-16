@@ -7,6 +7,7 @@ const BANGS = {
   w: 'https://pt.wikipedia.org/wiki/Special:Search?search=',
   amz: 'https://www.amazon.es/s?k=',
   cm: 'https://www.cardmarket.com/en/Magic/Products/Search?searchString=',
+  mw: 'https://makerworld.com/en/search/models?keyword=',
 }
 
 const DEFAULT_ENGINE = 'https://www.google.com/search?q='
@@ -50,7 +51,7 @@ export default function SearchBar() {
         ref={inputRef}
         type="text"
         aria-label="Pesquisar na web"
-        placeholder="Pesquisar… (!yt !gh !w !amz !cm)"
+        placeholder="Pesquisar… (!yt !gh !w !amz !cm !mw)"
         autoComplete="off"
       />
     </form>
