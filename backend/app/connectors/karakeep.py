@@ -57,6 +57,10 @@ class Karakeep(Connector):
                     "title": b.get("title") or content.get("title") or link or "(sem título)",
                     # bookmarks de texto não têm url → abrir no próprio Karakeep
                     "url": link or f"{self.url}/dashboard/preview/{b.get('id')}",
+                    # assets arquivados pelo Karakeep (servidos pelo proxy autenticado);
+                    # o screenshot é a captura rica da página, o banner é o og:image
+                    "screenshot": content.get("screenshotAssetId"),
+                    "asset": content.get("imageAssetId"),
                     "image": content.get("imageUrl"),
                     "favicon": content.get("favicon"),
                     "tags": [t.get("name") for t in (b.get("tags") or []) if t.get("name")][:3],

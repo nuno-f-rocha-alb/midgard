@@ -1,11 +1,26 @@
 import React from 'react'
 import { isInternal } from '../api.js'
 
+// fontes por ordem de qualidade: screenshot da página → banner (og:image) →
+// imagem externa → favicon → inicial. Os assets passam pelo proxy autenticado.
 function Thumb({ b }) {
-  const [broken, setBroken] = React.useState(false)
-  const src = !broken ? b.image || b.favicon : null
-  if (src) {
-    return <img className="kk-thumb" src={src} alt="" loading="lazy" onError={() => setBroken(true)} />
+  const sources = []
+  if (b.screenshot) sources.push(`/api/karakeep/asset/${b.screenshot}`)
+  if (b.asset) sources.push(`/api/karakeep/asset/${b.asset}`)
+  if (b.image) sources.push(b.image)
+  if (b.favicon) sources.push(b.favicon)
+  const [idx, setIdx] = React.useState(0)
+
+  if (idx < sources.length) {
+    return (
+      <img
+        className="kk-thumb"
+        src={sources[idx]}
+        alt=""
+        loading="lazy"
+        onError={() => setIdx((i) => i + 1)}
+      />
+    )
   }
   let host = ''
   try {
@@ -39,7 +54,7 @@ export default function Karakeep({ karakeep }) {
   return (
     <section className="section">
       <h2>{title}</h2>
-      <div className="kk-grid">
+      <div className="kk-row">
         {items.map((b) => (
           <a key={b.id} className="kk-card" href={b.url} target="_top" title={b.title}>
             <Thumb b={b} />

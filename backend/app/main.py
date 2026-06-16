@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import logging
+import re
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from fastapi.responses import FileResponse
+import httpx
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 
-from .config import STATIC_DIR
+from .config import STATIC_DIR, env
 from .connectors import enabled_connectors
 from .poller import start_all
 from .store import Store
@@ -52,6 +54,34 @@ def health() -> dict:
 @app.get("/api/snapshot")
 def snapshot() -> dict:
     return store.snapshot()
+
+
+_ASSET_RE = re.compile(r"^[A-Za-z0-9_-]+$")
+
+
+@app.get("/api/karakeep/asset/{asset_id}")
+async def karakeep_asset(asset_id: str) -> Response:
+    """Proxy autenticado para as imagens arquivadas do Karakeep — o browser não
+    pode enviar a API key, por isso o backend (que a tem) busca e reencaminha."""
+    base = env("KARAKEEP_URL").rstrip("/")
+    key = env("KARAKEEP_API_KEY")
+    if not (base and key) or not _ASSET_RE.match(asset_id):
+        raise HTTPException(status_code=404)
+    try:
+        async with httpx.AsyncClient(timeout=15) as client:
+            r = await client.get(
+                f"{base}/api/assets/{asset_id}",
+                headers={"Authorization": f"Bearer {key}"},
+            )
+    except Exception:
+        raise HTTPException(status_code=502)
+    if r.status_code != 200:
+        raise HTTPException(status_code=404)
+    return Response(
+        content=r.content,
+        media_type=r.headers.get("content-type", "application/octet-stream"),
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
 
 @app.websocket("/api/ws")

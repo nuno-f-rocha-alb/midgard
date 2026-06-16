@@ -493,13 +493,20 @@ body {
 .notes-add input:focus { border-color: var(--accent); }
 .notes-add input::placeholder { color: var(--muted); }
 
-/* ── karakeep (bookmarks de uma lista) ──────────── */
-.kk-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+/* ── karakeep (bookmarks de uma lista) — scroller horizontal ─────────── */
+.kk-row {
+  display: flex;
   gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding: 4px 0 10px;
+  /* fade subtil nas pontas a sugerir que há mais para o lado */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
 }
 .kk-card {
+  flex: 0 0 168px;
+  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   background: var(--card);
