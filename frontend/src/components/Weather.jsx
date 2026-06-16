@@ -69,6 +69,7 @@ export default function Weather() {
       const u = new URL(GEO)
       u.search = new URLSearchParams({ name: query.trim(), count: '1', language: 'pt' }).toString()
       const r = await fetch(u)
+      if (!r.ok) throw new Error(`HTTP ${r.status}`)
       const j = await r.json()
       const hit = (j.results || [])[0]
       if (!hit) {
@@ -83,6 +84,8 @@ export default function Weather() {
       setEditing(false)
       setQuery('')
       setError(null)
+    } catch (err) {
+      setError(String(err))
     } finally {
       setBusy(false)
     }
