@@ -1,10 +1,12 @@
 import React from 'react'
 
 // O SpoolWise corre à parte (porta 5000); o browser vai lá diretamente, daí o
-// CORS configurado do lado do SpoolWise. Override do URL em
-// localStorage['midgard:spoolwise'] (ex.: http://dockeralho.lan:5000).
+// CORS configurado do lado do SpoolWise. Por omissão assume que está no mesmo
+// host que serve o dashboard, na porta 5000. Override (ex.: outro host) em
+// localStorage['midgard:spoolwise'] = 'http://dockeralho.lan:5000'.
 const SPOOLWISE_URL =
-  localStorage.getItem('midgard:spoolwise') || 'http://localhost:5000'
+  localStorage.getItem('midgard:spoolwise') ||
+  `${location.protocol}//${location.hostname}:5000`
 
 function fmtHours(h) {
   if (h == null) return '—'
