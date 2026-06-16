@@ -45,6 +45,36 @@ export function useDashboard() {
   return state
 }
 
+// Estado persistido em localStorage (JSON). Mesmo padrão para atalhos/notas/meteo.
+export function useLocalStorage(key, initial) {
+  const [value, setValue] = useState(() => {
+    try {
+      const raw = localStorage.getItem(key)
+      return raw != null ? JSON.parse(raw) : initial
+    } catch {
+      return initial
+    }
+  })
+  const set = (v) =>
+    setValue((prev) => {
+      const next = typeof v === 'function' ? v(prev) : v
+      try {
+        localStorage.setItem(key, JSON.stringify(next))
+      } catch {}
+      return next
+    })
+  return [value, set]
+}
+
+// hosts internos (LAN) não têm favicon público — usar inicial em vez de 404
+export function isInternal(host) {
+  return (
+    /^\d{1,3}(\.\d{1,3}){3}$/.test(host) ||
+    /\.(local|lan|home|internal)$/i.test(host) ||
+    !host.includes('.')
+  )
+}
+
 // Tema claro/escuro: 'system' segue o SO, 'light'/'dark' fixam. Aplica em <html data-theme>.
 export function applyThemePref() {
   const mode = localStorage.getItem('midgard:theme') || 'system'

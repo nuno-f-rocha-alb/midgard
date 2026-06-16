@@ -6,6 +6,9 @@ import Machines from './components/Machines.jsx'
 import Widgets from './components/Widgets.jsx'
 import Services from './components/Services.jsx'
 import Settings from './components/Settings.jsx'
+import Bookmarks from './components/Bookmarks.jsx'
+import Weather from './components/Weather.jsx'
+import Notes from './components/Notes.jsx'
 import PendingOrders from './components/PendingOrders.jsx'
 
 function Clock() {
@@ -52,7 +55,12 @@ export default function App() {
         <Clock />
         <SearchBar />
         <TopSites />
+        <Bookmarks />
       </header>
+      <section className="section personal-grid">
+        <Weather />
+        <Notes />
+      </section>
       <main>
         {loading ? (
           <Skeleton />

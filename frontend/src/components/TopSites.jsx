@@ -1,13 +1,5 @@
 import React from 'react'
-
-// hosts internos (LAN) não têm favicon na DuckDuckGo — nem vale a pena tentar
-function isInternal(host) {
-  return (
-    /^\d{1,3}(\.\d{1,3}){3}$/.test(host) || // IPv4
-    /\.(local|lan|home|internal)$/i.test(host) || // TLDs privados
-    !host.includes('.') // nome de uma só etiqueta (ex.: "dockeralho")
-  )
-}
+import { isInternal } from '../api.js'
 
 function TopSiteIcon({ host, label }) {
   const [broken, setBroken] = React.useState(false)
