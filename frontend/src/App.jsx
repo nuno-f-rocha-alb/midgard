@@ -9,6 +9,7 @@ import Settings from './components/Settings.jsx'
 import Bookmarks from './components/Bookmarks.jsx'
 import Weather from './components/Weather.jsx'
 import Notes from './components/Notes.jsx'
+import Karakeep from './components/Karakeep.jsx'
 import PendingOrders from './components/PendingOrders.jsx'
 
 function Clock() {
@@ -61,6 +62,7 @@ export default function App() {
         <Weather />
         <Notes />
       </section>
+      <Karakeep karakeep={state.karakeep} />
       <main>
         {loading ? (
           <Skeleton />

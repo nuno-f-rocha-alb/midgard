@@ -493,6 +493,57 @@ body {
 .notes-add input:focus { border-color: var(--accent); }
 .notes-add input::placeholder { color: var(--muted); }
 
+/* ── karakeep (bookmarks de uma lista) ──────────── */
+.kk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+.kk-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text);
+  cursor: pointer;
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  transition: border-color 0.2s ease-out, transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.kk-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow);
+}
+.kk-thumb {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  background: var(--surface-2);
+  display: block;
+}
+.kk-thumb-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-ink);
+  font-family: var(--font-data);
+  font-size: 30px;
+  font-weight: 600;
+}
+.kk-title {
+  padding: 9px 11px;
+  font-size: 12.5px;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* ── sections / cards ───────────────────────────── */
 .section { margin-top: 36px; }
 h2 {
