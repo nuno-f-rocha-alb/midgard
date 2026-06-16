@@ -1,5 +1,29 @@
 import React from 'react'
 
+// hosts internos (LAN) não têm favicon na DuckDuckGo — nem vale a pena tentar
+function isInternal(host) {
+  return (
+    /^\d{1,3}(\.\d{1,3}){3}$/.test(host) || // IPv4
+    /\.(local|lan|home|internal)$/i.test(host) || // TLDs privados
+    !host.includes('.') // nome de uma só etiqueta (ex.: "dockeralho")
+  )
+}
+
+function TopSiteIcon({ host, label }) {
+  const [broken, setBroken] = React.useState(false)
+  if (!host || broken || isInternal(host)) {
+    return <span className="topsite-letter">{(label || host || '?')[0].toUpperCase()}</span>
+  }
+  return (
+    <img
+      src={`https://icons.duckduckgo.com/ip3/${host}.ico`}
+      alt=""
+      loading="lazy"
+      onError={() => setBroken(true)}
+    />
+  )
+}
+
 // Os "mais visitados" chegam da extensão via postMessage (chrome.topSites
 // só existe em contexto de extensão). Sem extensão, mostra os últimos recebidos
 // (cache em localStorage) ou nada.
@@ -34,11 +58,7 @@ export default function TopSites() {
         } catch {}
         return (
           <a key={s.url} className="topsite" href={s.url} target="_top" title={s.title}>
-            <img
-              src={`https://icons.duckduckgo.com/ip3/${host}.ico`}
-              alt=""
-              onError={(e) => (e.target.style.visibility = 'hidden')}
-            />
+            <TopSiteIcon host={host} label={s.title} />
             <span>{s.title || host}</span>
           </a>
         )

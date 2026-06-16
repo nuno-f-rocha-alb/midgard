@@ -254,6 +254,18 @@ body {
 }
 .topsite:hover { background: var(--card); }
 .topsite img { width: 28px; height: 28px; border-radius: 6px; }
+.topsite-letter {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
 .topsite span {
   font-size: 11.5px;
   color: var(--muted);
