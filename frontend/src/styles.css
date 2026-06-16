@@ -427,22 +427,71 @@ body {
 }
 .weather-extra b { color: var(--text); font-weight: 500; }
 
-.notes-area {
+.widget-title .notes-clear {
+  float: right;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 10.5px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-body);
+}
+.widget-title .notes-clear:hover { color: var(--accent); }
+
+.checklist { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 4px 4px 0;
+  border-radius: 7px;
+}
+.check-item:hover { background: var(--surface-2); }
+.check-box {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  border-radius: 5px;
+  border: 1.5px solid var(--card-border);
+  background: none;
+  color: #1a1006;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.15s ease-out, border-color 0.15s ease-out;
+}
+.check-item.done .check-box { background: var(--accent); border-color: var(--accent); }
+.check-text { flex: 1; font-size: 13.5px; cursor: pointer; word-break: break-word; }
+.check-item.done .check-text { text-decoration: line-through; color: var(--muted); }
+.check-remove {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 2px;
+  visibility: hidden;
+}
+.check-item:hover .check-remove { visibility: visible; }
+.check-remove:hover { color: var(--crit); }
+
+.notes-add input {
   width: 100%;
-  min-height: 96px;
-  resize: vertical;
   background: var(--surface-2);
   border: 1px solid var(--card-border);
-  border-radius: 10px;
-  padding: 10px 12px;
+  border-radius: 9px;
+  padding: 9px 12px;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 13.5px;
-  line-height: 1.55;
   outline: none;
 }
-.notes-area:focus { border-color: var(--accent); }
-.notes-area::placeholder { color: var(--muted); }
+.notes-add input:focus { border-color: var(--accent); }
+.notes-add input::placeholder { color: var(--muted); }
 
 /* ── sections / cards ───────────────────────────── */
 .section { margin-top: 36px; }

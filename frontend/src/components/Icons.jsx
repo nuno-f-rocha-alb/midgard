@@ -48,6 +48,7 @@ const PATHS = {
     </>
   ),
   moon: <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />,
+  check: <path d="M20 6 9 17l-5-5" />,
   plus: (
     <>
       <path d="M5 12h14" />
