@@ -52,8 +52,8 @@ def health() -> dict:
 
 
 @app.get("/api/snapshot")
-def snapshot() -> dict:
-    return store.snapshot()
+async def snapshot() -> dict:
+    return await store.snapshot()
 
 
 _ASSET_RE = re.compile(r"^[A-Za-z0-9_-]+$")
@@ -74,6 +74,7 @@ async def karakeep_asset(asset_id: str) -> Response:
                 headers={"Authorization": f"Bearer {key}"},
             )
     except Exception:
+        log.exception("proxy Karakeep falhou para asset %s", asset_id)
         raise HTTPException(status_code=502)
     if r.status_code != 200:
         raise HTTPException(status_code=404)

@@ -39,10 +39,10 @@ export default function Notes() {
   return (
     <div className="card widget notes">
       <div className="widget-title">
-        Notas
+        <span>Notas</span>
         {doneCount > 0 && (
           <button className="notes-clear" onClick={clearDone}>
-            limpar feitos ({doneCount})
+            limpar feitos <b>{doneCount}</b>
           </button>
         )}
       </div>
@@ -51,16 +51,16 @@ export default function Notes() {
         <ul className="checklist">
           {list.map((it, i) => (
             <li key={i} className={`check-item ${it.done ? 'done' : ''}`}>
+              {/* todo o rótulo é um só botão acessível (teclado + rato) */}
               <button
-                className="check-box"
+                className="check-toggle"
                 role="checkbox"
                 aria-checked={it.done}
-                aria-label={it.text}
                 onClick={() => toggle(i)}
               >
-                {it.done && <Icon name="check" size={12} />}
+                <span className="check-box">{it.done && <Icon name="check" size={12} />}</span>
+                <span className="check-text">{it.text}</span>
               </button>
-              <span className="check-text" onClick={() => toggle(i)}>{it.text}</span>
               <button
                 className="check-remove"
                 aria-label={`Apagar ${it.text}`}
@@ -74,6 +74,7 @@ export default function Notes() {
       )}
 
       <form className="notes-add" onSubmit={add}>
+        <Icon name="plus" size={14} className="notes-add-icon" />
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}

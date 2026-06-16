@@ -6,7 +6,7 @@ const api = typeof browser !== 'undefined' ? browser : chrome
 
 async function getSettings() {
   const stored = await api.storage.sync.get(DEFAULTS)
-  return { url: stored.dashboardUrl.replace(/\/$/, ''), accent: stored.accentColor }
+  return { url: (stored.dashboardUrl || '').replace(/\/+$/, ''), accent: stored.accentColor }
 }
 
 function showSetup() {
@@ -20,7 +20,18 @@ function showSetup() {
 
 async function init() {
   const { url, accent } = await getSettings()
-  const origin = new URL(url).origin
+  let parsed
+  try {
+    parsed = new URL(url)
+  } catch {
+    showSetup() // URL inválido/em falta nas opções — não rebentar o new-tab
+    return
+  }
+  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+    showSetup() // só http(s) — bloqueia esquemas perigosos (javascript:, data:, etc.)
+    return
+  }
+  const origin = parsed.origin
 
   const iframe = document.createElement('iframe')
   iframe.src = url

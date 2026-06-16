@@ -17,8 +17,16 @@ accent.addEventListener('input', () => {
 })
 
 document.getElementById('save').addEventListener('click', () => {
+  const url = input.value.trim()
+  try {
+    new URL(url) // valida antes de guardar — senão o new-tab rebenta a parsear
+  } catch {
+    saved.textContent = 'URL inválido ✗'
+    setTimeout(() => (saved.textContent = ''), 2000)
+    return
+  }
   api.storage.sync.set(
-    { dashboardUrl: input.value.trim(), accentColor: accent.value },
+    { dashboardUrl: url, accentColor: accent.value },
     () => {
       saved.textContent = 'guardado ✓'
       setTimeout(() => (saved.textContent = ''), 2000)

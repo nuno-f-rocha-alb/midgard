@@ -22,7 +22,10 @@ export default function PendingOrders() {
     let alive = true
     const load = async () => {
       try {
-        const r = await fetch(`${SPOOLWISE_URL}/api/orders/pending`)
+        // timeout para não pendurar o polling se o SpoolWise não responder
+        const r = await fetch(`${SPOOLWISE_URL}/api/orders/pending`, {
+          signal: AbortSignal.timeout(12000),
+        })
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
         const data = await r.json()
         if (alive) setState({ status: 'ok', data })

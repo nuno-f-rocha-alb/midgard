@@ -14,13 +14,14 @@ class Store:
         self.clients: set[WebSocket] = set()
         self._lock = asyncio.Lock()
 
-    def snapshot(self) -> dict[str, dict]:
-        return self.data
+    async def snapshot(self) -> dict[str, dict]:
+        async with self._lock:
+            return dict(self.data)  # cópia rasa: não entregar o dict vivo
 
     async def update(self, name: str, payload: dict) -> None:
-        self.data[name] = payload
         message = json.dumps({"name": name, "payload": payload}, default=str)
         async with self._lock:
+            self.data[name] = payload
             dead = []
             for ws in self.clients:
                 try:

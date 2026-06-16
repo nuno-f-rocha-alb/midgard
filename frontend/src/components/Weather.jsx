@@ -4,6 +4,7 @@ import { useLocalStorage } from '../api.js'
 
 // WMO weather code → ícone + descrição (pt)
 function wmo(code) {
+  if (typeof code !== 'number' || Number.isNaN(code)) return { icon: 'cloud', label: 'Desconhecido' }
   if (code === 0) return { icon: 'sun', label: 'Céu limpo' }
   if (code <= 2) return { icon: 'cloud-sun', label: 'Pouco nublado' }
   if (code === 3) return { icon: 'cloud', label: 'Nublado' }

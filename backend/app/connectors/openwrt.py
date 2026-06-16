@@ -49,8 +49,10 @@ class OpenWrt(Connector):
              {"username": r["user"], "password": r["password"], "timeout": 900}],
         )
         result = body.get("result")
-        if not isinstance(result, list) or result[0] != 0:
+        if not isinstance(result, list) or len(result) < 2 or result[0] != 0:
             raise RuntimeError(f"login ubus falhou em {r['name']}")
+        if not isinstance(result[1], dict) or "ubus_rpc_session" not in result[1]:
+            raise RuntimeError(f"login ubus: resposta inesperada de {r['name']}")
         sid = result[1]["ubus_rpc_session"]
         self._sessions[r["name"]] = sid
         return sid

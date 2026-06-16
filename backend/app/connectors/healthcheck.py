@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import logging
 import time
 
 import httpx
@@ -9,6 +10,8 @@ import yaml
 
 from ..config import SERVICES_FILE, env_bool
 from .base import Connector
+
+log = logging.getLogger("midgard")
 
 
 class HealthCheck(Connector):
@@ -19,7 +22,11 @@ class HealthCheck(Connector):
     def __init__(self) -> None:
         self.groups: list[dict] = []
         if SERVICES_FILE.exists():
-            raw = yaml.safe_load(SERVICES_FILE.read_text(encoding="utf-8")) or {}
+            try:
+                raw = yaml.safe_load(SERVICES_FILE.read_text(encoding="utf-8")) or {}
+            except yaml.YAMLError as exc:
+                log.error("services.yaml inválido, a ignorar: %s", exc)
+                raw = {}
             self.groups = raw.get("groups") or []
 
     @property

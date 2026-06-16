@@ -43,7 +43,7 @@ export default function Bookmarks() {
     } catch {
       return
     }
-    setItems((prev) => [...prev, { title: title.trim() || host, url: finalUrl }])
+    setItems((prev) => [...prev, { title: title.trim() || host || 'Atalho', url: finalUrl }])
     setTitle('')
     setUrl('')
     setAdding(false)

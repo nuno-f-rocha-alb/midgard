@@ -28,7 +28,10 @@ class PiHole(Connector):
         if not self._sid:
             r = await client.post(f"{self.url}/api/auth", json={"password": self.password})
             r.raise_for_status()
-            self._sid = r.json()["session"]["sid"]
+            sid = (r.json().get("session") or {}).get("sid")
+            if not sid:
+                raise RuntimeError("auth Pi-hole v6 falhou — sem SID na resposta")
+            self._sid = sid
         resp = await client.get(f"{self.url}/api/stats/summary", headers={"X-FTL-SID": self._sid})
         if resp.status_code == 401 and _retry:
             self._sid = None

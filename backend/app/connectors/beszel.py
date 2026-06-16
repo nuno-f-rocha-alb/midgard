@@ -27,8 +27,11 @@ class Beszel(Connector):
             json={"identity": self.email, "password": self.password},
         )
         resp.raise_for_status()
-        self._token = resp.json()["token"]
-        return self._token
+        token = resp.json().get("token")
+        if not token:
+            raise RuntimeError("auth Beszel sem 'token' na resposta")
+        self._token = token
+        return token
 
     async def fetch(self, client: httpx.AsyncClient) -> dict:
         token = self._token or await self._auth(client)

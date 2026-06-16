@@ -22,7 +22,7 @@ function Stat({ label, value, tone }) {
 
 function Pihole({ p }) {
   const d = p.data || {}
-  const pct = d.percent_blocked != null ? `${d.percent_blocked.toFixed(1)}%` : '—'
+  const pct = typeof d.percent_blocked === 'number' ? `${d.percent_blocked.toFixed(1)}%` : '—'
   return (
     <Widget title="Pi-hole" ok={p.ok} error={p.error}>
       <div className="stat-row">

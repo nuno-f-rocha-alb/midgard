@@ -3,7 +3,7 @@ import Icon from './Icons.jsx'
 
 function TileIcon({ svc }) {
   const [failed, setFailed] = React.useState(false)
-  if (!svc.icon || failed) return <span className="tile-letter">{svc.name[0]}</span>
+  if (!svc.icon || failed) return <span className="tile-letter">{(svc.name || '?')[0]}</span>
   return (
     <img
       src={`https://cdn.jsdelivr.net/gh/selfhst/icons/png/${svc.icon}.png`}

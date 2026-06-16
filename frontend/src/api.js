@@ -12,7 +12,7 @@ export function useDashboard() {
     fetch('/api/snapshot')
       .then((r) => r.json())
       .then((snap) => setState((s) => ({ ...snap, ...s })))
-      .catch(() => {})
+      .catch((err) => console.error('snapshot inicial falhou:', err))
 
     const connect = () => {
       ws = new WebSocket(
@@ -69,7 +69,8 @@ export function useLocalStorage(key, initial) {
 // hosts internos (LAN) não têm favicon público — usar inicial em vez de 404
 export function isInternal(host) {
   return (
-    /^\d{1,3}(\.\d{1,3}){3}$/.test(host) ||
+    // IPv4 com octetos 0-255 (não 999.999.999.999)
+    /^((25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(25[0-5]|2[0-4]\d|1?\d?\d)$/.test(host) ||
     /\.(local|lan|home|internal)$/i.test(host) ||
     !host.includes('.')
   )
@@ -111,6 +112,14 @@ export function useAccent() {
     if (saved) applyAccent(saved)
 
     const onMessage = (e) => {
+      // só aceitar a própria origem ou a extensão (chrome-/moz-extension://);
+      // ignorar mensagens de qualquer página que embeba o dashboard num iframe
+      const origin = e.origin || ''
+      const trusted =
+        origin === window.location.origin ||
+        origin.startsWith('chrome-extension://') ||
+        origin.startsWith('moz-extension://')
+      if (!trusted) return
       if (e.data?.type !== 'midgard:accent' || !e.data.color) return
       // o seletor in-app manda; a extensão só semeia se ainda não há escolha local
       if (localStorage.getItem('midgard:accent')) return

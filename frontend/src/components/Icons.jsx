@@ -141,7 +141,7 @@ export default function Icon({ name, size = 16, className = '', label }) {
       aria-label={label}
       role={label ? 'img' : undefined}
     >
-      {PATHS[name]}
+      {PATHS[name] || null}
     </svg>
   )
 }

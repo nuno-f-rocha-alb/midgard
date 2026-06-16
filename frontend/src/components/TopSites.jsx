@@ -30,6 +30,13 @@ export default function TopSites() {
 
   React.useEffect(() => {
     const onMessage = (e) => {
+      // mesma validação de origem do accent: só a própria página ou a extensão
+      const origin = e.origin || ''
+      const trusted =
+        origin === window.location.origin ||
+        origin.startsWith('chrome-extension://') ||
+        origin.startsWith('moz-extension://')
+      if (!trusted) return
       if (e.data?.type !== 'midgard:topsites' || !Array.isArray(e.data.sites)) return
       const top = e.data.sites.slice(0, 12)
       setSites(top)
