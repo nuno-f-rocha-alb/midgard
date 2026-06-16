@@ -26,44 +26,61 @@ class Bifrost(Connector):
         resp.raise_for_status()
         return resp.json()
 
+    async def _opt(self, client: httpx.AsyncClient, path: str):
+        """Endpoints auxiliares: podem falhar isoladamente (ex.: WG indisponível,
+        bouncer do CrowdSec não configurado) sem deitar abaixo o cartão todo."""
+        try:
+            return await self._get(client, path), None
+        except Exception as exc:
+            return None, str(exc)
+
     async def fetch(self, client: httpx.AsyncClient) -> dict:
-        status, peers, decisions, images = await asyncio.gather(
-            self._get(client, "/status"),
-            self._get(client, "/wireguard/peers"),
-            self._get(client, "/crowdsec/decisions"),
-            self._get(client, "/updates/images"),
-            return_exceptions=True,
+        # /status é o core: se falhar, propaga (o widget passa a mostrar o erro
+        # real — auth/ligação — em vez de fingir zeros).
+        status = await self._get(client, "/status")
+
+        (peers, peers_err), (decisions, dec_err), (images, img_err) = await asyncio.gather(
+            self._opt(client, "/wireguard/peers"),
+            self._opt(client, "/crowdsec/decisions"),
+            self._opt(client, "/updates/images"),
         )
 
-        def safe(value, fallback):
-            return fallback if isinstance(value, Exception) else value
-
-        status = safe(status, {})
-        peers = safe(peers, [])
-        decisions = safe(decisions, [])
-        images = safe(images, [])
-
         containers = status.get("containers") or []
-        if isinstance(peers, dict):
-            peers = peers.get("peers", [])
-        if isinstance(decisions, dict):
-            decisions = decisions.get("decisions", [])
-        if isinstance(images, dict):
-            images = images.get("images", [])
+        running = sum(
+            1
+            for c in containers
+            if (s := str(c.get("status", "")).lower()) == "running" or s.startswith("up")
+        )
 
-        updates_pending = [
-            i for i in images
-            if isinstance(i, dict) and (i.get("update_available") or i.get("outdated"))
+        peer_list = peers.get("peers", []) if isinstance(peers, dict) else (peers or [])
+
+        # /crowdsec/decisions → {page, limit, total, items:[...]}
+        bans_total = decisions.get("total") if isinstance(decisions, dict) else None
+        recent = (decisions.get("items") or [])[:5] if isinstance(decisions, dict) else []
+
+        # /updates/images → lista de dicts com update_available
+        img_list = images if isinstance(images, list) else []
+        updates_pending = sum(
+            1 for i in img_list if isinstance(i, dict) and i.get("update_available")
+        )
+
+        warnings = [
+            w
+            for w in (
+                f"wireguard: {peers_err}" if peers_err else None,
+                f"crowdsec: {dec_err}" if dec_err else None,
+                f"updates: {img_err}" if img_err else None,
+            )
+            if w
         ]
+
         return {
-            "containers_running": sum(
-                1 for c in containers if "running" in str(c.get("status", "")).lower()
-                or "up" in str(c.get("status", "")).lower()
-            ),
+            "containers_running": running,
             "containers_total": len(containers),
             "disk": status.get("disk_usage"),
-            "wireguard_peers": peers,
-            "crowdsec_bans": len(decisions),
-            "recent_bans": decisions[:5] if isinstance(decisions, list) else [],
-            "updates_pending": len(updates_pending),
+            "wireguard_peers": peer_list,
+            "crowdsec_bans": bans_total,
+            "recent_bans": recent,
+            "updates_pending": updates_pending,
+            "warnings": warnings,
         }

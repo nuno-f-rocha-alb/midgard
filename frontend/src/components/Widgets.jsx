@@ -107,6 +107,11 @@ function Vps({ b }) {
         <Stat label="updates" value={d.updates_pending} tone={d.updates_pending > 0 ? 'warn-text' : ''} />
       </div>
       {d.disk?.percent != null && <div className="widget-foot">disco: {d.disk.percent}% usado</div>}
+      {d.warnings?.length > 0 && (
+        <div className="widget-foot warn">
+          <Icon name="alert" size={12} label="aviso" /> {d.warnings.join(' · ')}
+        </div>
+      )}
     </Widget>
   )
 }

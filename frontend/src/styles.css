@@ -668,6 +668,7 @@ h2 {
 .widget-error { border-color: rgba(248, 113, 113, 0.35); }
 .widget-err-msg { color: var(--crit); font-size: 12.5px; word-break: break-all; }
 .widget-foot { color: var(--muted); font-size: 11.5px; margin-top: 10px; }
+.widget-foot.warn { color: var(--warn); display: flex; align-items: center; gap: 5px; }
 
 .stat-row { display: flex; gap: 20px; flex-wrap: wrap; }
 .stat { display: flex; flex-direction: column; gap: 3px; }
